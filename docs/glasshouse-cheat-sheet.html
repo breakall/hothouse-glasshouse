@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glasshouse — Hothouse control sheet</title>
+<style>
+  :root { --ink:#203b35; --muted:#576a63; --paper:#faf8f1; --line:#d2d9ce; --green:#dce7d1; --blue:#dde9ed; --amber:#eee1c5; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#e7e9e2; color:var(--ink); font:13px/1.35 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; }
+  .toolbar { max-width:1256px; margin:18px auto 10px; padding:0 8px; display:flex; justify-content:space-between; align-items:center; color:var(--muted); font-size:12px; }
+  button { font:inherit; padding:9px 15px; border:1px solid var(--ink); border-radius:5px; color:var(--ink); background:var(--paper); cursor:pointer; }
+  button:hover { background:var(--green); } button:focus-visible { outline:3px solid #7097a0; outline-offset:3px; }
+  .sheet { max-width:1256px; margin:0 auto 28px; padding:27px 30px 22px; background:var(--paper); box-shadow:0 7px 35px #203b3512; }
+  header { display:flex; justify-content:space-between; gap:25px; align-items:flex-end; padding-bottom:15px; border-bottom:2px solid var(--ink); }
+  .eyebrow { text-transform:uppercase; letter-spacing:2px; font-size:10px; font-weight:750; }
+  h1 { margin:0; font:55px/.98 Georgia,"Times New Roman",serif; letter-spacing:-2px; }
+  .subtitle { margin-top:7px; color:var(--muted); font-size:12px; }
+  .quick-start { max-width:485px; font-size:12px; text-align:right; }
+  .quick-start b { display:block; margin-bottom:3px; text-transform:uppercase; letter-spacing:1px; font-size:10px; }
+  main { display:grid; grid-template-columns:34% 1fr; gap:24px; padding-top:17px; }
+  h2 { margin:0; font-size:13px; letter-spacing:.5px; }
+  .section-head { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:7px; }
+  .section-head small { color:var(--muted); font-size:10px; white-space:nowrap; }
+  .pedal { width:100%; max-height:524px; display:block; }
+  .pedal text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; fill:var(--ink); }
+  .pedal .label { font-size:13px; font-weight:800; letter-spacing:.6px; }
+  .pedal .detail { font-size:10px; fill:#42574e; }
+  .pedal .switch-label { font-size:11px; font-weight:800; }
+  .pedal .number { font-size:10px; font-weight:800; fill:#fff; }
+  .diagram-caption { font-size:10px; color:var(--muted); text-align:center; margin:1px 0 9px; }
+  .gesture { border-top:1px solid var(--line); padding:8px 0 0; font-size:11px; }
+  .gesture strong { display:block; font-size:12px; margin-bottom:3px; }
+  .gesture p { margin:3px 0; }
+  .pages { display:grid; grid-template-columns:1fr 1fr; gap:15px 19px; align-content:start; }
+  .page { min-width:0; }
+  .page h2 { padding:7px 9px; background:var(--green); display:flex; justify-content:space-between; align-items:center; }
+  .page h2 span { font-size:9px; letter-spacing:.5px; font-weight:650; }
+  .page.options h2 { background:var(--blue); }
+  .page.automation h2 { background:var(--amber); }
+  .page.presets h2 { background:#e4e1eb; }
+  table { width:100%; border-collapse:collapse; font-size:11px; }
+  th,td { text-align:left; vertical-align:top; padding:4px 3px; border-bottom:1px solid var(--line); }
+  th { font-size:9px; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); }
+  td:first-child { width:29px; font-weight:800; white-space:nowrap; }
+  td:nth-child(2) { font-weight:650; }
+  .param-table td:nth-child(2) { width:43%; }
+  .switches { margin-top:5px; }
+  .switches td:nth-child(2) { font-weight:400; }
+  .switches b { font-weight:750; }
+  .note { font-size:10px; margin:6px 2px 0; color:var(--muted); }
+  .route { margin-top:13px; padding:9px 11px; border-top:1px solid var(--ink); border-bottom:1px solid var(--ink); font-size:11px; }
+  .route b { margin-right:8px; }
+  .operations { display:grid; grid-template-columns:1fr 1fr; gap:18px; padding:12px 0; font-size:10.5px; }
+  .operations p { margin:0; }
+  .midi { border-top:2px solid var(--ink); padding-top:10px; }
+  .midi-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px; }
+  .midi table { font-size:10px; }
+  .midi td:first-child { width:83px; }
+  .midi td:nth-child(2) { font-weight:400; }
+  footer { display:flex; justify-content:space-between; gap:15px; margin-top:10px; color:var(--muted); font-size:9px; }
+  .legend { color:var(--muted); font-size:10px; margin:0 0 9px; }
+  @media (max-width:850px) {
+    .sheet { padding:22px; } header { align-items:flex-start; } h1 { font-size:44px; }
+    .quick-start { max-width:310px; } main { grid-template-columns:32% 1fr; gap:15px; }
+    .pages { grid-template-columns:1fr; } .pedal { max-height:none; }
+    .midi-grid { grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width:580px) {
+    .toolbar span { max-width:230px; } header { display:block; } .quick-start { text-align:left; margin-top:14px; max-width:none; }
+    main { grid-template-columns:1fr; } .pedal { max-height:550px; } .pages { grid-template-columns:1fr; }
+    .midi-grid,.operations { grid-template-columns:1fr; gap:10px; } footer { display:block; }
+    table { font-size:12px; } .note,.legend { font-size:11px; }
+  }
+  @page { size:letter landscape; margin:8mm; }
+  @media print {
+    html,body { background:white; font-size:8pt; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .toolbar { display:none; } .sheet { width:100%; max-width:none; margin:0; padding:0; box-shadow:none; }
+    header { padding-bottom:7px; } h1 { font-size:36px; } .eyebrow { font-size:8px; }
+    .subtitle,.quick-start { font-size:9px; } .quick-start { max-width:410px; } .quick-start b { font-size:8px; }
+    main { grid-template-columns:32% 1fr; gap:17px; padding-top:8px; }
+    .pedal { width:100%; max-height:340px; } .diagram-caption { font-size:8px; margin-bottom:5px; }
+    h2 { font-size:10px; } .section-head { margin-bottom:4px; } .section-head small { font-size:8px; }
+    .pages { grid-template-columns:1fr 1fr; gap:10px 14px; }
+    .page h2 { padding:5px 7px; } .page h2 span { font-size:7px; }
+    table { font-size:8.2px; line-height:1.3; } th { font-size:7px; } th,td { padding:2px; }
+    .param-table td:nth-child(2) { width:42%; } .switches { margin-top:3px; }
+    .note,.legend { font-size:7.7px; } .note { margin-top:4px; } .legend { margin-bottom:6px; }
+    .gesture { font-size:8px; padding-top:5px; } .gesture strong { font-size:9px; }
+    .route { margin-top:8px; padding:6px 8px; font-size:8.3px; }
+    .operations { padding:8px 0; gap:15px; font-size:8px; }
+    .midi { padding-top:7px; } .midi-grid { grid-template-columns:1fr 1fr 1fr; gap:14px; }
+    .midi table { font-size:7.8px; } .midi td:first-child { width:65px; }
+    footer { font-size:7px; margin-top:6px; }
+    header,main,.route,.operations,.midi,footer { break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="toolbar"><span>Self-contained reference · Works offline · Prints on one landscape Letter sheet</span><button type="button" onclick="window.print()">Print / Save PDF</button></div>
+<article class="sheet">
+  <header>
+    <div><div class="eyebrow">Hothouse / Creative compressor</div><h1>Glasshouse</h1><div class="subtitle">Control sheet · Firmware v0.3.2 · View from above</div></div>
+    <div class="quick-start"><b>A good starting point</b>Sensitivity 10–11h · Dynamics 9–10h · Wet 12h<br>Attack 12h · EQ 12h · Dry minimum · All toggles centered<br><strong>Starts bypassed. Tap right to enable.</strong></div>
+  </header>
+  <main>
+    <section aria-labelledby="panel-title">
+      <div class="section-head"><h2 id="panel-title">01 / Performance panel</h2><small>Default page</small></div>
+      <svg class="pedal" viewBox="0 0 450 610" role="img" aria-labelledby="pedal-title pedal-desc">
+        <title id="pedal-title">Glasshouse controls on the Hothouse pedal</title>
+        <desc id="pedal-desc">Top row: knob 1 sensitivity, knob 2 dynamics, knob 3 wet. Second row: knob 4 attack, knob 5 EQ, knob 6 dry. Below: toggle 1 release, toggle 2 EQ mode, toggle 3 physics. Left footswitch is Aux swell; right is bypass with hold for sag. Left LED shows gain reduction or swell; right LED shows effect enabled.</desc>
+        <defs>
+          <g id="knob"><circle r="28" fill="#203b35"/><circle r="23" fill="none" stroke="#799082" stroke-width="1"/><path d="M0 -24V-12" stroke="#faf8f1" stroke-width="3" stroke-linecap="round"/></g>
+          <g id="toggle"><circle r="12" fill="#75847a"/><circle r="8" fill="#edf0e5"/><path d="M0 5V-10" stroke="#203b35" stroke-width="5" stroke-linecap="round"/></g>
+          <g id="foot"><circle r="27" fill="#a7b0a6" stroke="#63756a"/><circle r="21" fill="#edf0e5" stroke="#63756a"/><circle r="15" fill="#ced6c9"/></g>
+          <g id="badge"><circle r="8" fill="#203b35"/></g>
+        </defs>
+        <rect x="30" y="31" width="390" height="560" rx="24" fill="#e5eadc" stroke="#8da18d" stroke-width="1.5"/>
+        <rect x="39" y="40" width="372" height="542" rx="17" fill="none" stroke="#f9fbf2" stroke-width="2"/>
+        <path d="M137 31V17H157V31 M293 31V17H313V31" fill="#a7b0a6" stroke="#63756a"/>
+        <text x="147" y="11" text-anchor="middle" class="detail">OUT · TRS</text><text x="303" y="11" text-anchor="middle" class="detail">IN · TRS</text>
+        <text x="225" y="25" text-anchor="middle" class="detail">9V DC</text>
+        <text x="225" y="73" text-anchor="middle" style="font-family:Georgia,serif;font-size:26px;letter-spacing:1px">GLASSHOUSE</text>
+        <text x="225" y="91" text-anchor="middle" class="detail">CLEVELAND MUSIC CO. HOTHOUSE</text>
+        <g transform="translate(95 143)"><use href="#knob"/><g transform="translate(-32 -25)"><use href="#badge"/><text y="3.5" text-anchor="middle" class="number">1</text></g></g>
+        <g transform="translate(225 143)"><use href="#knob"/><g transform="translate(-32 -25)"><use href="#badge"/><text y="3.5" text-anchor="middle" class="number">2</text></g></g>
+        <g transform="translate(355 143)"><use href="#knob"/><g transform="translate(-32 -25)"><use href="#badge"/><text y="3.5" text-anchor="middle" class="number">3</text></g></g>
+        <text x="95" y="187" text-anchor="middle" class="label">SENSITIVITY</text><text x="95" y="204" text-anchor="middle" class="detail">Threshold −6 → −54 dBFS</text>
+        <text x="225" y="187" text-anchor="middle" class="label">DYNAMICS</text><text x="225" y="204" text-anchor="middle" class="detail">Compress → limit → sag</text>
+        <text x="355" y="187" text-anchor="middle" class="label">WET</text><text x="355" y="204" text-anchor="middle" class="detail">Mute → +12 dB</text>
+        <g transform="translate(95 253)"><use href="#knob"/><g transform="translate(-32 -25)"><use href="#badge"/><text y="3.5" text-anchor="middle" class="number">4</text></g></g>
+        <g transform="translate(225 253)"><use href="#knob"/><g transform="translate(-32 -25)"><use href="#badge"/><text y="3.5" text-anchor="middle" class="number">5</text></g></g>
+        <g transform="translate(355 253)"><use href="#knob"/><g transform="translate(-32 -25)"><use href="#badge"/><text y="3.5" text-anchor="middle" class="number">6</text></g></g>
+        <text x="95" y="297" text-anchor="middle" class="label">ATTACK</text><text x="95" y="314" text-anchor="middle" class="detail">0.5 → 300 ms*</text>
+        <text x="225" y="297" text-anchor="middle" class="label">EQ</text><text x="225" y="314" text-anchor="middle" class="detail">Dark ← flat → bass cut</text>
+        <text x="355" y="297" text-anchor="middle" class="label">DRY</text><text x="355" y="314" text-anchor="middle" class="detail">Mute → +12 dB</text>
+        <g transform="translate(95 356)"><use href="#toggle"/></g><g transform="translate(225 356)"><use href="#toggle"/></g><g transform="translate(355 356)"><use href="#toggle"/></g>
+        <text x="95" y="385" text-anchor="middle" class="switch-label">T1 · RELEASE</text><text x="225" y="385" text-anchor="middle" class="switch-label">T2 · EQ MODE</text><text x="355" y="385" text-anchor="middle" class="switch-label">T3 · PHYSICS</text>
+        <g text-anchor="middle" class="detail">
+          <text x="95" y="403">↑ 50 ms</text><text x="95" y="418">• Custom</text><text x="95" y="433">↓ 1.5 s</text>
+          <text x="225" y="403">↑ Responsive</text><text x="225" y="418">• Fixed</text><text x="225" y="433">↓ Modulated</text>
+          <text x="355" y="403">↑ Gentle spring</text><text x="355" y="418">• Stable</text><text x="355" y="433">↓ Lively spring</text>
+        </g>
+        <path d="M61 451H389" stroke="#b6c3af"/>
+        <circle cx="113" cy="473" r="5" fill="#9cb484" stroke="#63756a"/><circle cx="337" cy="473" r="5" fill="#9cb484" stroke="#63756a"/>
+        <text x="113" y="490" text-anchor="middle" class="detail">Reduction / swell</text><text x="337" y="490" text-anchor="middle" class="detail">Effect enabled</text>
+        <use href="#foot" x="113" y="525"/><use href="#foot" x="337" y="525"/>
+        <text x="113" y="567" text-anchor="middle" class="label">AUX / SWELL</text><text x="337" y="567" text-anchor="middle" class="label">BYPASS / SAG</text>
+      </svg>
+      <p class="diagram-caption">Wet + Dry: noon = unity for each. *Nominal attack, plus detector response.</p>
+      <div class="gesture"><strong>Footswitches · Pages 1–4</strong><p><b>Left:</b> dynamic swell while active; manual mode dips, then swells after release. A brief manual tap completes the dip.</p><p><b>Right:</b> tap to enable/bypass; hold ≥0.4 s for maximum sag. Latch option changes these behaviors.</p><p><b>Hold both ≥3 s:</b> enter USB firmware flashing mode.</p></div>
+    </section>
+    <div>
+      <p class="legend"><b>K</b> = knob number on diagram · <b>T</b> = toggle number · Toggle choices below read <b>UP / MIDDLE / DOWN</b></p>
+      <div class="pages">
+        <section class="page envelope" aria-labelledby="envelope-title">
+          <h2 id="envelope-title">02 / Envelope <span>LEFT LED: 1 FLASH</span></h2>
+          <table class="param-table"><thead><tr><th>Knob</th><th>Parameter</th><th>Range, left → right</th></tr></thead><tbody>
+            <tr><td>K1</td><td>Gate threshold</td><td>−80 → −30 dBFS</td></tr>
+            <tr><td>K2</td><td>Gate release</td><td>20 ms → 1.5 s</td></tr>
+            <tr><td>K3</td><td>Swell in</td><td>10 ms → 4 s</td></tr>
+            <tr><td>K4</td><td>Swell out</td><td>10 ms → 4 s</td></tr>
+            <tr><td>K5</td><td>Custom release</td><td>50 ms → 1.5 s</td></tr>
+            <tr><td>K6</td><td>Detector bass cut</td><td>Off at minimum; 20 → 1200 Hz</td></tr>
+          </tbody></table>
+          <table class="switches"><tbody>
+            <tr><td>T1</td><td><b>Envelope:</b> Fixed / Fixed attack + adaptive release / Adaptive both</td></tr>
+            <tr><td>T2</td><td><b>Spread routing:</b> EQ / EQ + volume / Volume</td></tr>
+            <tr><td>T3</td><td><b>Emphasis:</b> Off / ≈ +3.5 dB / +6 dB</td></tr>
+          </tbody></table>
+          <p class="note">Custom release applies in Performance T1’s middle position. Detector bass cut changes triggering, not the direct audio tone.</p>
+        </section>
+        <section class="page options" aria-labelledby="options-title">
+          <h2 id="options-title">03 / Options <span>LEFT LED: 2 FLASHES</span></h2>
+          <table class="param-table"><thead><tr><th>Knob</th><th>Parameter</th><th>Range, left → right</th></tr></thead><tbody>
+            <tr><td>K1</td><td>Spread depth</td><td>Minimum → maximum</td></tr>
+            <tr><td>K2</td><td>Automation rate</td><td>0.03 → 8 Hz</td></tr>
+            <tr><td>K3</td><td>Noise gate</td><td>Left half off / right half on</td></tr>
+            <tr><td>K4</td><td>Compression motion</td><td>Left half off / right half on</td></tr>
+            <tr><td>K5</td><td>Dusty drive</td><td>Left half off / right half on</td></tr>
+            <tr><td>K6</td><td>Footswitch latch</td><td>Momentary / latching</td></tr>
+          </tbody></table>
+          <table class="switches"><tbody>
+            <tr><td>T1</td><td><b>Input:</b> Mono / Stereo / Left audio + right sidechain</td></tr>
+            <tr><td>T2</td><td><b>Swell:</b> Dynamic with Aux / Manual / Always dynamic</td></tr>
+            <tr><td>T3</td><td><b>Stereo:</b> Linked / Independent / Spread</td></tr>
+          </tbody></table>
+          <p class="note">Latch: dynamic Aux taps on/off; sag holds on/off. Manual swell stays momentary. Sidechain mode outputs processed left audio on both channels.</p>
+        </section>
+        <section class="page automation" aria-labelledby="automation-title">
+          <h2 id="automation-title">04 / Automation <span>LEFT LED: 3 FLASHES</span></h2>
+          <table class="param-table"><thead><tr><th>Knob</th><th>Automation depth for</th><th>Range</th></tr></thead><tbody>
+            <tr><td>K1</td><td>Sensitivity</td><td rowspan="6">Each knob: 0 → 100% depth.<br><br>Minimum leaves that parameter unchanged.<br><br>Set speed on <b>Options K2</b>.</td></tr>
+            <tr><td>K2</td><td>Dynamics</td></tr><tr><td>K3</td><td>Wet level</td></tr><tr><td>K4</td><td>Attack</td></tr><tr><td>K5</td><td>EQ</td></tr><tr><td>K6</td><td>Dry level</td></tr>
+          </tbody></table>
+          <table class="switches"><tbody>
+            <tr><td>T1</td><td><b>Mode:</b> Off / One-shot / Repeating bounce</td></tr>
+            <tr><td>T2</td><td><b>Range:</b> Rise to setting / Fall from setting / Around setting</td></tr>
+            <tr><td>T3</td><td><b>Shape:</b> Linear / Smooth cosine / Stepped</td></tr>
+          </tbody></table>
+          <p class="note">One-shot restarts when enabling the effect from bypass. Depth is relative to the performance knob’s stored setting. No MIDI-clock sync.</p>
+        </section>
+        <section class="page presets" aria-labelledby="presets-title">
+          <h2 id="presets-title">05 / Presets <span>LEDS: BANK + SLOT</span></h2>
+          <table><thead><tr><th>Control</th><th>Action</th></tr></thead><tbody>
+            <tr><td>K1</td><td>Select bank 1–8</td></tr>
+            <tr><td>K2</td><td>Select slot 1–16</td></tr>
+            <tr><td>Left tap</td><td>Recall selected slot; empty slots do nothing</td></tr>
+            <tr><td>Right hold ≥1 s</td><td>Save all four settings pages to selected slot</td></tr>
+            <tr><td>Left LED</td><td>Flashes bank number</td></tr>
+            <tr><td>Right LED</td><td>Flashes slot number; dim = empty</td></tr>
+          </tbody></table>
+          <p class="note"><b>127 slots:</b> banks 1–7 have 16; bank 8 has 15. K3–K6 and T1–T3 are unused on this page.</p>
+          <p class="note"><b>Save overwrites the selected slot.</b> A save briefly mutes audio; the right LED blinks in acknowledgment. Avoid removing power during a save.</p>
+          <p class="note">This page replaces the normal footswitch actions. Saved presets persist; ordinary page edits alone do not.</p>
+        </section>
+      </div>
+    </div>
+  </main>
+  <div class="route"><b>CHANGE PAGE</b> Briefly press both footswitches together, then release both: <strong>Performance → Envelope → Options → Automation → Presets → repeat</strong></div>
+  <div class="operations">
+    <p><b>Knob pickup:</b> after changing pages, recalling a preset or sending MIDI, turn through the stored position before a knob takes control. Toggles take control when physically moved.</p>
+    <p><b>Remember:</b> no automatic makeup gain—raise Wet to compensate. Dry also feeds the final limiter / Dusty drive. Startup uses physical Performance controls and default advanced options; recall a preset to restore saved options.</p>
+  </div>
+  <section class="midi" aria-labelledby="midi-title">
+    <div class="section-head"><h2 id="midi-title">USB MIDI / Channel 1</h2><small>USB MIDI host or computer required · No TRS MIDI input</small></div>
+    <div class="midi-grid">
+      <table><tbody>
+        <tr><td>CC 14–19</td><td>Performance K1–K6</td></tr><tr><td>CC 20–25</td><td>Envelope K1–K6</td></tr><tr><td>CC 26–31</td><td>Options K1–K6</td></tr><tr><td>CC 32–37</td><td>Automation K1–K6</td></tr>
+        <tr><td>CC 40–51</td><td>T1–T3, in page order: Performance 40–42; Envelope 43–45; Options 46–48; Automation 49–51</td></tr>
+      </tbody></table>
+      <table><tbody>
+        <tr><td>CC 102</td><td>Bypass: 0–63 / effect on: 64–127</td></tr><tr><td>CC 103</td><td>Aux release: 0–63 / press: 64–127</td></tr><tr><td>CC 104</td><td>Sag release: 0–63 / engage: 64–127</td></tr><tr><td>CC 119</td><td>Value 1–127 saves corresponding preset</td></tr><tr><td>CC 118 = 127</td><td>Identity query; replies CC 118 = 2</td></tr>
+      </tbody></table>
+      <table><tbody>
+        <tr><td>PC 1–127</td><td>Recall corresponding preset</td></tr><tr><td>PC 0</td><td>Return to live settings captured before recall</td></tr><tr><td>Knob values</td><td>0–127 = minimum → maximum</td></tr><tr><td>Toggle values</td><td>0–42 up · 43–84 middle · 85–127 down</td></tr><tr><td>PC numbering</td><td>Some controllers display bytes 0–127 as programs 1–128.</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+  <footer><span>GLASSHOUSE v0.3.2 · October 2026 · Independent digital interpretation; not affiliated with Chase Bliss or Cleveland Music Co.</span><span>USB: MIDI + firmware · Audio bypass is digital · Settings reflect the installed firmware.</span></footer>
+</article>
+</body>
+</html>

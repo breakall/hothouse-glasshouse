@@ -1,0 +1,26 @@
+Glasshouse original firmware sources: GPL-3.0-or-later. See LICENSE.
+
+Inspired by the published creative-compression behaviors of Chase Bliss Clean.
+This is original digital DSP, not Chase Bliss firmware, a measured circuit
+model, or a claim of sonic/preset compatibility. Chase Bliss and Clean are names
+of their respective owners, used to identify the behavioral reference.
+Not affiliated with or endorsed by Chase Bliss, Cleveland Music Co. or Electrosmith.
+
+Hothouse driver (obtained by tools/setup.sh in vendor/HothouseExamples):
+Copyright (C) 2024 Cleveland Music Co. <code@clevelandmusicco.com>
+GPL-3.0-or-later, from https://github.com/clevelandmusicco/HothouseExamples
+Revision ff2b5ac0874fd03557eece62dbb3c784562cb7ee.
+The original copyright/license headers remain in the fetched source files.
+
+libDaisy is obtained separately by tools/setup.sh at revision
+f7727edb9a1febdd174b5310a7bc65340dae8700 from
+https://github.com/electro-smith/libDaisy and retains its upstream license
+notices, including those of its bundled vendor components. Copies of the
+relevant dependency license texts accompany the distributed firmware in
+docs/licenses/.
+
+assets/hothouse-pedal.jpg is the Hothouse hardware photo used by
+https://github.com/breakall/hothouse-atmosphere and copied from the local
+checkout of that project. Its recorded original source is
+https://github.com/breakall/hothouse-nam-player/blob/main/assets/hothouse-pedal.jpg
+Source Git blob: 9f241b8ef5f397d320c5fcbe841a00e48b3363dc.

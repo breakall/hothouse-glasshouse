@@ -1,0 +1,13 @@
+build/
+vendor/
+.DS_Store
+__pycache__/
+*.wav
+*.m4a
+.env
+.env.*
+!.env.example
+/glasshouse-cheat-sheet.html
+release/*
+!release/glasshouse-seed.bin
+!release/SHA256SUMS
